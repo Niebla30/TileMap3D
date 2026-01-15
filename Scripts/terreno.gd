@@ -9,7 +9,20 @@ var height_map_image: Image
 func _ready() -> void:
 	Global.celda_cambiada.connect(_on_celda_cambiada)
 	height_map_image = height_map_tex.get_image()
+	#calcula_alturas()
 
+func calcula_alturas():
+	var maxh: float = 0.0
+	var minh: float = 3.0
+	for i in height_map_image.get_size().x:
+		for j in height_map_image.get_size().y:
+			var h_value = height_map_image.get_pixel(i, j).r
+			if maxh < h_value:
+				maxh = h_value
+			if minh > h_value:
+				minh = h_value
+	print("Maximos: ", maxh, " - ", minh)
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 @warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
