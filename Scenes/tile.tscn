@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://dlus4rdbgqy34"]
+
+[ext_resource type="Script" uid="uid://cob4q61fj4y8s" path="res://Scripts/tile.gd" id="1_4kj4d"]
+[ext_resource type="Shader" uid="uid://c67ah701gwo5r" path="res://Shaders/tile_shader.gdshader" id="1_rvq8p"]
+[ext_resource type="Texture2D" uid="uid://cs5yv4v1sqaan" path="res://Images/TilesHeightMap.png" id="1_xsjyq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rvq8p"]
+resource_local_to_scene = true
+shader = ExtResource("1_rvq8p")
+shader_parameter/frame = 3
+
+[sub_resource type="QuadMesh" id="QuadMesh_4kj4d"]
+size = Vector2(192, 195)
+
+[node name="Tile" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_4kj4d")
+
+[node name="TileMesh" type="MeshInstance2D" parent="."]
+material = SubResource("ShaderMaterial_rvq8p")
+position = Vector2(0, 32)
+scale = Vector2(-1, -1)
+mesh = SubResource("QuadMesh_4kj4d")
+texture = ExtResource("1_xsjyq")

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cyxuec6bimklq"]
+
+[ext_resource type="Script" uid="uid://gou65yiy5ue1" path="res://Scripts/terreno.gd" id="1_gur0h"]
+
+[node name="Terreno" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_gur0h")
