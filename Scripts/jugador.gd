@@ -31,12 +31,12 @@ func _physics_process(delta: float) -> void:
 		var cell: Vector2i = Global.world_to_hmap(global_position, altura)
 		cell = Vector2i(clamp(cell.x, 0, hmap_size.x - 1), clamp(cell.y, 0, hmap_size.y - 1))		
 		if cell != cell_actual:
-			print(cell)
+			var cell_ant = cell_actual
 			cell_actual = cell
 			altura = Global.hmap_get_height(cell)
 			var world_pos = Global.hmap_to_world(cell)
 			global_position.y = world_pos.y
-			Global.celda_cambiada.emit(cell)
+			Global.celda_cambiada.emit(cell, cell_ant)
 	else:
 		# 4. Detener movimiento y pausar animación (al no tener Idle)
 		velocity = Vector2.ZERO
@@ -56,9 +56,10 @@ func on_teleport(pos: Vector2i):
 	global_position = Global.hmap_to_world(pos)
 	
 	# 2. Actualizamos su identidad lógica
+	var cell_ant = cell_actual
 	cell_actual = pos
 	altura = Global.hmap_get_height(pos)
 	# 3. Forzamos la actualización del pool emitiendo la señal de celda
-	Global.celda_cambiada.emit(pos)
+	Global.celda_cambiada.emit(pos, cell_ant)
 	
 	

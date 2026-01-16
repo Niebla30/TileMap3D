@@ -5,7 +5,7 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Global.celda_cambiada.connect(_on_celda_cambiada)
+	Global.celda_cambiada.connect(on_celda_cambiada)
 	Global.hmap_image = height_map_tex.get_image()
 	#calcula_alturas()
 
@@ -59,11 +59,28 @@ func generar_mapa():
 				
 			Global.pool.push_back(tile)
 
-func _on_celda_cambiada(pos: Vector2i):
-	comprobar_grid(pos)
+func on_celda_cambiada(pos: Vector2i, pos_ant: Vector2i):
+	var distancia_salto = (pos - pos_ant).abs()
+	
+	if distancia_salto.x >= Global.MAP_SIZE.x or distancia_salto.y >= Global.MAP_SIZE.y:
+		pool_completo(pos)
+	else:
+		pool_incremental(pos)
+		
+func pool_completo(pos_jugador: Vector2i):
+	var ancla_mapa = pos_jugador - Global.MAP_HALFSIZE
+	
+	for i in range(Global.MAP_SIZE.x):
+		for j in range(Global.MAP_SIZE.y):
+			var idTile = Global.grid_id(Vector2i(i,j))
+			var tile = Global.pool[idTile]
+			
+			tile.pos_heightmap = ancla_mapa + Vector2i(i, j)			
+			
+			actualizar_identidad(tile)
 
 #Esto es idea de la AI para hacer los saltos de tiles
-func comprobar_grid(pos_jugador: Vector2i): #se puede hacer por señal al cambiar el jugador de celda
+func pool_incremental(pos_jugador: Vector2i): #se puede hacer por señal al cambiar el jugador de celda
 	
 	#var idTile: int = Global.grid_id(pos_jugador)
 	var pos_heightmap_jugador: Vector2i = pos_jugador #Global.pool[idTile].pos_heightmap
@@ -88,11 +105,12 @@ func comprobar_grid(pos_jugador: Vector2i): #se puede hacer por señal al cambia
 		elif diff.y < -Global.MAP_HALFSIZE.y:
 			tile.pos_heightmap.y += Global.MAP_SIZE.y
 			salto_realizado = true
-			
+
 		# 3. Solo si el tile ha "saltado", actualizamos su posición física y arte
 		if salto_realizado:
 			actualizar_identidad(tile)
-
+		
+		
 func actualizar_identidad(tile: Node2D):
 	var indice_relativo = tile.pos_heightmap - Global.hmap_center()
 	var iso_x = (indice_relativo.x - indice_relativo.y) * Global.TILE_HALFSIZE.x
@@ -101,6 +119,13 @@ func actualizar_identidad(tile: Node2D):
 		
 	tile.global_position = Vector2(iso_x, iso_y - (h_value))
 	tile.height =  h_value
+	
+	tile.visible = true
+	if tile.pos_heightmap.x < 0 or tile.pos_heightmap.y < 0:
+		tile.visible = false
+	var hmap_size = Global.hmap_size()
+	if tile.pos_heightmap.x >= hmap_size.x or tile.pos_heightmap.y >= hmap_size.y:
+		tile.visible = false
 	
 	var h_value_normalized = Global.hmap_get_height_normalized(tile.pos_heightmap)
 	asignar_shader(h_value_normalized, tile)

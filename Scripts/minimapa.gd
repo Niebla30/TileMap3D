@@ -1,22 +1,26 @@
 extends Control
 
-@onready var minimap_tex = $Panel/TextureRect
-@onready var player_marker = $Panel/TextureRect/ColorRect
+@onready var minimap_tex = $VBoxContainer/Panel/TextureRect
+@onready var player_marker = $VBoxContainer/Panel/TextureRect/ColorRect
+@onready var label =  $VBoxContainer/lbl_celda
 
 var hmap_size: Vector2i
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Global.celda_cambiada.connect(on_player_moved)
 	hmap_size = Global.hmap_size()
-	on_player_moved(Global.hmap_center())
+	on_player_moved(Global.hmap_center(), Global.hmap_center())
 	
-func on_player_moved(pos: Vector2i):
+func on_player_moved(pos: Vector2i, pos_ant: Vector2i):
+	
 	var rel_x = float(pos.x) / hmap_size.x
 	var rel_y = float(pos.y) / hmap_size.y
 
 	var minimap_size = minimap_tex.size
 	player_marker.position = Vector2(rel_x * minimap_size.x, rel_y * minimap_size.y)
 	player_marker.position -= player_marker.size / 2.0
+	
+	label.text = "Cell: " + str(pos.x) + " - " + str(pos.y)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

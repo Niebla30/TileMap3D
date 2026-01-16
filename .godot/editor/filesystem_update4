@@ -1,8 +1,7 @@
-res://Scenes/mundo.tscn
+res://Scenes/minimapa.tscn
 res://Shaders/tile_shader.gdshader
+res://Scripts/minimapa.gd
 res://Scenes/terreno.tscn
 res://Scripts/terreno.gd
 res://Scripts/Global.gd
 res://Scripts/jugador.gd
-res://Scripts/mundo.gd
-res://Scripts/tile.gd
