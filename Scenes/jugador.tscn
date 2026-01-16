@@ -226,6 +226,8 @@ blend_point_10/pos = Vector2(1, -1)
 blend_mode = 1
 
 [node name="Jugador" type="CharacterBody2D"]
+z_index = 1
+y_sort_enabled = true
 script = ExtResource("1_c1mnh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

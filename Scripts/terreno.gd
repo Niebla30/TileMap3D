@@ -107,7 +107,12 @@ func actualizar_identidad(tile: Node2D):
 	
 func asignar_shader(altura: float, tile: Node2D):
 	var mat = tile.get_node("TileMesh").material as ShaderMaterial
-	if altura < 0.08:
+	tile.get_node("TileWater").visible = false
+	if altura < 0.02:
+		mat.set_shader_parameter("frame", 5)
+		tile.get_node("TileWater").position.y = tile.height - 0.02
+		tile.get_node("TileWater").visible = true
+	elif altura < 0.08:
 		mat.set_shader_parameter("frame", 5)
 	elif altura < 0.16:
 		mat.set_shader_parameter("frame", 4)

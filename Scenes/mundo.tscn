@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://csiyn2honk3hl"]
+[gd_scene load_steps=5 format=3 uid="uid://csiyn2honk3hl"]
 
 [ext_resource type="PackedScene" uid="uid://cyxuec6bimklq" path="res://Scenes/terreno.tscn" id="1_4cw5y"]
 [ext_resource type="Script" uid="uid://jjjwjo3f2425" path="res://Scripts/mundo.gd" id="1_uqtxj"]
 [ext_resource type="PackedScene" uid="uid://dut3lxn16npba" path="res://Scenes/jugador.tscn" id="4_glouy"]
+[ext_resource type="PackedScene" uid="uid://c0x0qupty3hul" path="res://Scenes/minimapa.tscn" id="4_yf8a8"]
 
 [node name="Mundo" type="Node2D"]
 script = ExtResource("1_uqtxj")
@@ -16,3 +17,7 @@ position = Vector2(587, 322)
 zoom = Vector2(0.2, 0.2)
 process_callback = 0
 position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+rotation_smoothing_enabled = true
+
+[node name="Minimapa" parent="." instance=ExtResource("4_yf8a8")]

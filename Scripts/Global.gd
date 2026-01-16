@@ -2,6 +2,7 @@ extends Node
 
 @warning_ignore("unused_signal")
 signal celda_cambiada (pos: Vector2i)
+signal solicitado_teletransporte(coord_mapa: Vector2i)
 
 const MAP_SIZE: Vector2i = Vector2i(32, 32)
 const MAP_HALFSIZE: Vector2i = MAP_SIZE * 0.5

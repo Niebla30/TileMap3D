@@ -11,6 +11,7 @@ var hmap_size: Vector2i
 func _ready() -> void:
 	anim_tree.active = true
 	hmap_size = Global.hmap_size()
+	Global.solicitado_teletransporte.connect(on_teleport)
 	
 @warning_ignore("unused_parameter")
 func _physics_process(delta: float) -> void:
@@ -49,8 +50,15 @@ func posicion_inicio():
 	cell_actual = celda_central
 	altura = Global.hmap_get_height(celda_central)
 	
-	#var celda_central: Vector2i = Global.MAP_SIZE * 0.5
-	#var idTile = Global.grid_id(celda_central)
-	#global_position = Global.pool[idTile].global_position
-	#cell_actual = celda_central
-	#altura =  Global.pool[idTile].height
+func on_teleport(pos: Vector2i):
+	# 1. Movemos físicamente al jugador al (0,0) o la posición mundo correspondiente
+	# Como el pool es relativo al jugador, lo más limpio es ponerlo en el centro visual
+	global_position = Global.hmap_to_world(pos)
+	
+	# 2. Actualizamos su identidad lógica
+	cell_actual = pos
+	altura = Global.hmap_get_height(pos)
+	# 3. Forzamos la actualización del pool emitiendo la señal de celda
+	Global.celda_cambiada.emit(pos)
+	
+	

@@ -1,8 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://dlus4rdbgqy34"]
+[gd_scene load_steps=12 format=3 uid="uid://dlus4rdbgqy34"]
 
 [ext_resource type="Script" uid="uid://cob4q61fj4y8s" path="res://Scripts/tile.gd" id="1_4kj4d"]
 [ext_resource type="Shader" uid="uid://c67ah701gwo5r" path="res://Shaders/tile_shader.gdshader" id="1_rvq8p"]
 [ext_resource type="Texture2D" uid="uid://cs5yv4v1sqaan" path="res://Images/TilesHeightMap.png" id="1_xsjyq"]
+[ext_resource type="Texture2D" uid="uid://be2j6bm6cpsup" path="res://Images/Water.png" id="2_y55j6"]
+[ext_resource type="Shader" uid="uid://c3jwffg45i7h3" path="res://Shaders/tile_offset.gdshader" id="4_g7l7l"]
+[ext_resource type="Texture2D" uid="uid://bse76qd6nu357" path="res://Images/TileOffset.png" id="4_khers"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y55j6"]
+shader = ExtResource("4_g7l7l")
+
+[sub_resource type="QuadMesh" id="QuadMesh_g7l7l"]
+size = Vector2(192, 311)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rvq8p"]
 resource_local_to_scene = true
@@ -12,13 +21,32 @@ shader_parameter/frame = 3
 [sub_resource type="QuadMesh" id="QuadMesh_4kj4d"]
 size = Vector2(192, 195)
 
+[sub_resource type="QuadMesh" id="QuadMesh_1f6se"]
+size = Vector2(192, 96)
+center_offset = Vector3(0, -20, 0)
+
 [node name="Tile" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_4kj4d")
 
+[node name="TileOffset" type="MeshInstance2D" parent="."]
+z_index = -1
+material = SubResource("ShaderMaterial_y55j6")
+position = Vector2(0, 109)
+mesh = SubResource("QuadMesh_g7l7l")
+texture = ExtResource("4_khers")
+
 [node name="TileMesh" type="MeshInstance2D" parent="."]
 material = SubResource("ShaderMaterial_rvq8p")
 position = Vector2(0, 32)
-scale = Vector2(-1, -1)
+rotation = 3.1415927
 mesh = SubResource("QuadMesh_4kj4d")
 texture = ExtResource("1_xsjyq")
+
+[node name="TileWater" type="MeshInstance2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.5803922)
+z_index = 1
+y_sort_enabled = true
+mesh = SubResource("QuadMesh_1f6se")
+texture = ExtResource("2_y55j6")
